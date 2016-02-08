@@ -1,0 +1,27 @@
+Question 4 :
+
+En utilisant des kmers de longueur 4, on observe que l'on obtient toutes les fenêtres du fichier phage-lambda
+aussi bien en utilisant read1, que read2. Celà s'explique par le fait qu'avec des kmers de 4 nucléotides, on ne peut
+obtenir que 256 kmers différents. 
+
+En passant à des kmers de longueur 8, on obtient un nombre de fenêtres beaucoup moins conséquent qu'avec le cas précèdent
+En fixant le ratio à 0.1, plus de 50 fenêtres sont affichées pour read1 et plus de 30 pour read2. 
+Cependant lorsque l'on augmente le ratio (à 0.5 par exemple), le nombre de fenêtres qui s'affiche est plus ou moins 
+équivalent pour read1 et read2 (un peu plus d'un dizaine pour un seuil à 0.5) avec des positions dans la séquence 
+qui sont bien différenciés :
+		Aux alentours de la position 27000 pour read1 , et de la position 34000 pour read2
+
+En utilisant des kmers de longueur 12, on observe que le nombre de fenêtres diminue mais celà nous donne un 
+meilleur encadrement de la portion de séquence qui nous intéresse : 
+	Read1 : les fenêtres vont de la position 27800 à la position 27950
+	Read2 : Avec un seuil de 0.1, les fenêtres vont de la position 34800 à 34900. Cependant lorsque l'on dépasse ce seuil
+			il n'y a plus aucune fenêtre qui apparaît. 
+
+Pour des kmers de longueur 16 et 20, nous obtenons aucune fenêtre pour read2 et seulement quelques une avec read1 mais
+lorsque le seuil ne dépasse pas 0.1
+
+On peut en conclure que la longueur optimale de kmers est la longueur 12. En effet, elle permet de montrer un bon 
+encadrement de la séquence, tout en gardant un seuil correct. Grâce à cette étude, on a pu voir de grosses similitudes
+entre read1 et la portion de séquence de phage-lambda (position 27800 à 27950) ainsi qu'un nombre plus faible de similitudes
+avec read2 et phage-lambda.
+
