@@ -25,3 +25,27 @@ encadrement de la séquence, tout en gardant un seuil correct. Grâce à cette �
 entre read1 et la portion de séquence de phage-lambda (position 27800 à 27950) ainsi qu'un nombre plus faible de similitudes
 avec read2 et phage-lambda.
 
+-----------------------------------------------------
+
+Question 7 :
+
+
+En utilisant des graines comme par exemple "#-#--###-###" qui sont de poids 8, on observe que le ratio reste plus ou
+ moins identique qu'en utilisant la graine non espacée de poids 8.
+Lorsque l'on augmente la taille des kmers, la ratio obtenu reste aussi très proche que celui obtenu avec des graines non
+espacées de même poids. 
+On peut en conclure que les graines espacés permettent "d'ignorer" un nucléotide qui a été muté dans une portion de séquence
+et donc de garder un ratio proche de celui obtenu avec des kmers non espacés.
+L'utilisation des graines à aussi un intérêt pour les séquences qui ont subi des délétions ainsi que des ajouts de nucléotides. En effet, le fait
+"d'oublier" un nucléotide dans le motif de la graine permet de ne pas prendre en compte une potentielle addition ou suppression. 
+
+
+-----------------------------------------------------
+
+Question 8 :
+
+En utilisant des graines contiguës, on obtient les mêmes fenêtres que ceux de la question 4, ce qui est logique. 
+Lorsqu'on utilise des graines espacées de poids 12 qui permet les résultats les plus précis (Cf question 4) comme 
+par exemple "####-####-####", on observe que la position des fenêtres se précisent encore plus qu'avec les 
+graines contigues. En effet on peut augmenter le seuil plus facilement tout en gardant un bon résultat.
+Cela s'explique par le fait qu'on peut ignorer certains nucléotides qui diffère entre le read et la fenêtre.

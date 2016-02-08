@@ -231,14 +231,6 @@ public class Analyser {
 	 *  en erreur pour comparer plusieurs séquences. 
 	 */
 	
-	/*
-	 * Question 14 :
-	 *  Lorsque l'on compare les séquences d'ebola mutées avec la séquence ebola-z en utilisant la graine "########" on obtient les même ratio qu'en utilisant 
-	 *  un kmer de longueur 8 ce qui est normal
-	 *  Mais en utilisant des graines comme par exemple "#-#--###-###" qui sont aussi de poids 8, on observe que le ratio reste plus ou moins identique.
-	 *  L'utilisation des graines à un intérêt surtout pour les séquences qui ont subi des délétions ainsi que des ajouts de nucléotides. En effet, le fait
-	 *  "d'oublier" un nucléotide dans le motif de la graine permet de ne pas prendre en compte une potentielle addition ou suppression. 
-	 */
 	
 	/**
 	 * Imprime les différentes fenêtres de la sequence.
