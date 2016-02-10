@@ -6,7 +6,7 @@ java -jar bioseq.jar windows 80 40 phage-lambda.fasta
 
 echo "Question 2\n"
 
-echo "La formule"
+echo "Partie inférieure ( (n-l)/s ) + 1"
 
 echo "\nQuestion 3\n"
 
