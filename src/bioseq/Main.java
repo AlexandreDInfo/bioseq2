@@ -54,5 +54,11 @@ public class Main {
 	    	Kmers kmers = new Kmers();
 	    	System.out.println(kmers.enumerateSpacedKmers(Integer.parseInt(args[1]), Integer.parseInt(args[2])));
 	    }
+	    if(option.equals("best-matches")){
+	    	analyser.bestMatches(Integer.parseInt(args[1]), args[2], args[3], args[4]);
+	    }
+	    if(option.equals("VJ-discover")){
+	    	analyser.vjDiscover(args[1], args[2], args[3], args[4]);
+	    }
 	}
 }

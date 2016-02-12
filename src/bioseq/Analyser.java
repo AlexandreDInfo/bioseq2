@@ -309,4 +309,132 @@ public class Analyser {
 		mapperWindowsKmers(longueurWin, shiftWin, graine, seuilKmer, read, genome);
 	}
 	
+	/**
+	 * Compte le nombre de kmers en commun entre la liste des kmers de read et celle de germ
+	 * @param read
+	 * @param germ
+	 * @return
+	 */
+	public int nombreKmersCommuns(Kmers read, Kmers germ) {
+		int cpt = 0;
+		read.deleteDoublon();
+		for (int i = 0; i < read.getList().size(); i++){
+			if(germ.getList().contains(read.getList().get(i))){
+				cpt++;
+			}
+		}
+		return cpt;
+	}
+	
+	/**
+	 * Ecrit les n séquences de germline les plus semblables en les comparant avec le fichier read
+	 * @param n
+	 * @param graine
+	 * @param read
+	 * @param germline
+	 */
+	public void bestMatches (int n, String graine, String read, String germline) {
+		Kmers kmersRead = new Kmers(graine,read);
+		Sequence seqGermline = new Sequence(germline);
+		Scanner scanSequence = new Scanner(seqGermline.getSequence());
+		Scanner scanNom = new Scanner(seqGermline.getName());
+		Map<String,Integer> tableDesComparaisons = new HashMap<String,Integer>(); 
+		int kmersCommun;
+		while(scanSequence.hasNext()) {
+			Kmers kmersGermline = new Kmers();
+			kmersGermline.generateWindowKmers(graine, scanSequence.nextLine());
+			kmersCommun = nombreKmersCommuns(kmersRead, kmersGermline);
+			tableDesComparaisons.put(scanNom.nextLine(),kmersCommun); 
+		}
+		scanSequence.close();
+		scanNom.close();
+		
+		// On imprime les meilleurs résultats
+		for(int i = 0; i < n ; i++) {
+			int max = 0;
+			String nom = "";
+			for(Map.Entry<String, Integer> entry : tableDesComparaisons.entrySet()){
+				if (max < entry.getValue()){
+					max = entry.getValue();
+					nom = entry.getKey();
+				}	
+			}
+			tableDesComparaisons.remove(nom);
+			System.out.printf(">%s   %d \n", nom, max);
+		}
+	}
+	
+	/**
+	 * Affiche les meilleure séquence V et J pour chaque séquence read
+	 * @param graine
+	 * @param reads
+	 * @param germlineV
+	 * @param germlineJ
+	 */
+	public void vjDiscover(String graine, String reads, String germlineV, String germlineJ){
+		Sequence seqReads = new Sequence(reads);
+		Sequence seqGermlineV = new Sequence(germlineV);
+		Sequence seqGermlineJ = new Sequence(germlineJ);
+		Scanner scanSeqReads = new Scanner(seqReads.getSequence());
+		Scanner scanNomReads = new Scanner(seqReads.getName());
+		Map<String,Integer> tableDesComparaisons = new HashMap<String,Integer>();
+		int kmersCommun = 0;
+		int max = 0;
+		String nomGermlineV = "";
+		String nomGermlineJ = "";
+
+		// On parcourt chaque séquence du fichier reads
+		while(scanSeqReads.hasNextLine()){
+			Kmers kmersRead = new Kmers();
+			kmersRead.generateWindowKmers(graine, scanSeqReads.nextLine());
+			Scanner scanSeqGermlineJ = new Scanner(seqGermlineJ.getSequence());
+			Scanner scanNomGermlineJ = new Scanner(seqGermlineJ.getName());
+			Scanner scanSeqGermlineV = new Scanner(seqGermlineV.getSequence());
+			Scanner scanNomGermlineV = new Scanner(seqGermlineV.getName());
+			
+			// Comparaisons pour le germlineV
+			while(scanSeqGermlineV.hasNextLine()){
+				Kmers kmersGermlineV = new Kmers();
+				kmersGermlineV.generateWindowKmers(graine, scanSeqGermlineV.nextLine());
+				kmersCommun = nombreKmersCommuns(kmersRead, kmersGermlineV);
+				tableDesComparaisons.put(scanNomGermlineV.nextLine(), kmersCommun);
+			}
+			for(Map.Entry<String, Integer> entry : tableDesComparaisons.entrySet()){
+				if (max < entry.getValue()){
+					max = entry.getValue();
+					nomGermlineV = entry.getKey();
+				}	
+			}
+			
+			// On réinitialise les données pour effectuer la comparaison avec l'autre fichier
+			tableDesComparaisons.clear();
+			max = 0;
+			
+			// Comparaisons pour le germlineJ
+			while(scanSeqGermlineJ.hasNextLine()){
+				Kmers kmersGermlineJ = new Kmers();
+				kmersGermlineJ.generateWindowKmers(graine, scanSeqGermlineJ.nextLine());
+				kmersCommun = nombreKmersCommuns(kmersRead, kmersGermlineJ);
+				tableDesComparaisons.put(scanNomGermlineJ.nextLine(), kmersCommun);
+			}
+			for(Map.Entry<String, Integer> entry : tableDesComparaisons.entrySet()){
+				if (max < entry.getValue()){
+					max = entry.getValue();
+					nomGermlineJ = entry.getKey();
+				}	
+			}
+			tableDesComparaisons.clear();
+			max = 0;
+			
+			// Affichage du résultat
+			System.out.printf(">%s   %12s   %12s \n", scanNomReads.nextLine(), nomGermlineV, nomGermlineJ);
+			scanSeqGermlineV.close();
+			scanNomGermlineV.close();
+			scanSeqGermlineJ.close();
+			scanNomGermlineJ.close();
+		}
+		
+		scanSeqReads.close();
+		scanNomReads.close();
+	}
 }
